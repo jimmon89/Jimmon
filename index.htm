@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<script src="javascript.js"></script>
+		<title>Home</title>
+	</head>
+	<body onload="javascript:init();">
+		<div class="center">
+			<div class="content" id="form">
+				<div id="menu">
+					<ul id="mnu"></ul>
+				</div>
+			<br />
+			<input type="text" id="q" value="" placeholder="Search..." onkeypress="javascript:handleQuery(event,this.value);" onfocus="this.value=this.value" />
+			<br /><br />
+			<div id="more">
+				<input type="button" id="plus" value="+" onclick="javascript:toggleNote();" />
+				<br />
+				<div id="help"></div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
