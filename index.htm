@@ -1,26 +1,356 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
-		<link rel="stylesheet" type="text/css" href="style.css">
-		<script src="javascript.js"></script>
-		<title>Home</title>
-	</head>
-	<body onload="javascript:init();">
-		<div class="center">
-			<div class="content" id="form">
-				<div id="menu">
-					<ul id="mnu"></ul>
-				</div>
-			<br />
-			<input type="text" id="q" value="" placeholder="Search..." onkeypress="javascript:handleQuery(event,this.value);" onfocus="this.value=this.value" />
-			<br /><br />
-			<div id="more">
-				<input type="button" id="plus" value="+" onclick="javascript:toggleNote();" />
-				<br />
-				<div id="help"></div>
-				</div>
-			</div>
-		</div>
-	</body>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+  <script>
+    var $ = function(id) {
+      return document.getElementById(id);
+    };
+    var help = "<ul> \
+     <li>end search normally to use <b>'Google (Default)'</b></li> \
+     <li>end search in <b>'!i'</b> to use <b>'Google Images'</b></li> \
+     <li>end search in <b>'!y'</b> to use <b>'YouTube'</b></li> \
+     <li>end search in <b>'!p'</b> to use <b>'PornMD'</b></li> \
+     <li>end search in <b>'!g'</b> to use <b>'PCGamingWiki'</b></li> \
+     <li>end search in <b>'!w'</b> to use <b>'Wikipedia'</b></li> \
+     <li>end search in <b>'!u'</b> to use <b>'Urban Dictionary'</b></li> \
+     <li>end search in <b>'!m'</b> to use <b>'IMDb'</b></li> \
+</ul>";
+    var search = [
+      ["", "https://www.google.com/search?q="],
+      ["!i", "https://www.google.com/search?tbm=isch&q="],
+      ["!y", "https://www.youtube.com/results?search_query="],
+      ["!p", "https://www.pornmd.com/straight/"],
+      ["!g", "https://pcgamingwiki.com/w/index.php?search="],
+      ["!w", "http://en.wikipedia.org/w/index.php?search="],
+      ["!u", "http://www.urbandictionary.com/define.php?term="],
+      ["!m", "http://www.imdb.com/find?q="],
+    ];
+    var menus = [
+      ["General"],
+      ["Games"],
+      ["Fun Stuff"],
+      ["Utilities"],
+      ["Ahoy Ahoy!"],
+    ];
+    var showFavicon = true;
+    var links = [
+      ["Gmail", "https://mail.google.com/", ""],
+      ["Facebook", "http://facebook.com", ""],
+      ["Pastebin", "http://pastebin.com", ""],
+      ["Google Translate", "https://translate.google.com/", ""],
+      ["", "", ""],
+      ["Ultimate Steam F2P Filter", "http://store.steampowered.com/search/?tags=-9271%2C-9%2C-1666%2C-3871%2C-4736%2C-21978%2C-5577%2C-3799%2C-379975%2C-1676%2C-597%2C-1718%2C-1698%2C-1625%2C-1741%2C-1670%2C113&category1=998%2C997&category3=36&genre=Free%20to%20Play", ""],
+      ["Humble Bundle", "https://www.humblebundle.com/", ""],
+      ["Indie Gala", "https://www.indiegala.com/", ""],
+      ["Steam Status", "https://steamstat.us/", ""],
+      ["PCGamingWiki", "https://pcgamingwiki.com/", ""],
+      ["Roll20", "https://roll20.net/", ""],
+      ["", "", ""],
+      ["Mega.nz", "https://mega.nz/", ""],
+      ["Imgur", "https://imgur.com/", ""],
+      ["YouTube", "https://www.youtube.com/", ""],
+      ["Netflix", "http://netflix.com", ""],
+      ["Twitch", "http://go.twitch.tv/", ""],
+      ["", "", ""],
+      ["Dropbox", "https://www.dropbox.com", ""],
+      ["Google Drive", "https://drive.google.com/", ""],
+      ["SteamID.IO", "https://steamid.io/lookup/", ""],
+      ["Mouse Sensitivity Calculator", "http://www.mouse-sensitivity.com/", ""],
+      ["Ninite", "https://ninite.com", ""],
+      ["", "", ""],
+      ["Steam Underground Community", "http://cs.rin.ru/forum/index.php", ""],
+      ["Revold FTP", "ftp://revolt:1234@revolt.group/", ""],
+      ["Pirate Powered", "https://piratepowered.ga/", ""],
+      ["Good Old Downloads", "https://goodolddownloads.com/", ""],
+      ["", "", ""],
+    ];
+    var ss = "";
+
+    function init() {
+      for (var i = 0; i < search.length; i++)
+        if (search[i][0] == "")
+          ss = search[i][1];
+      if (ss == "")
+        alert("Error: Missing default search engine!");
+      $('help').innerHTML = help;
+      build();
+      $('q').value = "";
+      $('q').focus();
+    }
+
+    function build() {
+      $('mnu').innerHTML = "";
+      for (var i = 0; i < menus.length; i++) {
+        $('mnu').innerHTML += "<li><label>" + menus[i][0] + "</label>\n<ul id=\"mnu_" + (i + 1) + "\"></ul></li>";
+      }
+      var m = 1,
+        skip = false;
+      for (var i = 0; i < links.length; i++) {
+        if (links[i][0] == "" && links[i][1] == "")
+          skip = true;
+        if (!skip) {
+          var printimg = "";
+          if (showFavicon) {
+            var favicon;
+            if (links[i][2] != "")
+              favicon = links[i][2];
+            else
+              favicon = getFavicon(links[i][1]);
+            printimg = "<img id=\"img_" + i + "\" src=\"" + favicon + "\"" + " onload=\"javascript:this.style.visibility='inherit';\" /> ";
+          }
+          $('mnu_' + m).innerHTML += "<li><a href=\"" + links[i][1] + "\" target=\"_self\">" + printimg + links[i][0] + "</a></li>";
+        } else {
+          skip = false;
+          m++;
+        }
+      }
+    }
+
+    function handleQuery(e, q) {
+      var key = e.keyCode || e.which;
+      if (key == 13) {
+        var x = q.lastIndexOf("!");
+        if (x != -1 && x >= q.length - 2) {
+          for (var i = 0; i < search.length; i++) {
+            if (search[i][0] == q.substr(x)) {
+              window.location = search[i][1] + q.substr(0, x).replace(/&/g, "%26");
+              return true;
+            }
+          }
+          window.location = ss + q.substr(0, x).replace(/&/g, "%26");
+        } else {
+          window.location = ss + q.replace(/&/g, "%26");
+        }
+      }
+    }
+
+    function getFavicon(url) {
+      var l = document.createElement("a");
+      l.href = url;
+      return l.protocol + "//" + l.hostname + "/favicon.ico";
+    }
+  </script>
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <meta name="generator" content="Google Web Designer 1.9.0.0619">
+  <title>Home</title>
+  <style type="text/css">
+    html, body {
+      margin: 0px;
+      padding: 0px;
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      font-family: "Droid Sans", "Liberation Sans", "DejaVu Sans", "Segoe UI", Sans;
+      font-size: 10pt;
+      background: rgb(23, 24, 26);
+    }
+    ul, li {
+      list-style-type: none;
+      margin: 0px;
+      padding: 0px;
+    }
+    textarea {
+      background: rgb(39, 40, 43);
+      color: rgb(206, 207, 209);
+    }
+    a, a:link, a:visited {
+      color: rgb(206, 207, 209);
+      text-decoration: none;
+      transition: 0.2s ease-out;
+    }
+    a:hover, a:active {
+      color: rgb(17, 17, 19);
+    }
+    .center {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    .center .content {
+      margin: -75px 0px 0px;
+      overflow: visible;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 50%;
+      text-align: center;
+      opacity: 1;
+    }
+    #q {
+      width: calc(784px);
+      background: rgb(39, 40, 43);
+      color: rgb(206, 207, 209);
+      border: 0px;
+      border-radius: 1px;
+      padding: 8px;
+      font-size: 12pt;
+      height: 16px;
+    }
+    #more {
+      background: transparent;
+      color: rgb(170, 171, 173);
+      display: block;
+      margin: 0px auto;
+      width: 32px;
+      height: 32px;
+      text-align: center;
+      font-weight: bold;
+      cursor: default;
+    }
+    #plus {
+      border: 0px;
+      border-radius: 1px 1px 0px 0px;
+      width: 32px;
+      height: 32px;
+      font-size: 12pt;
+      background: transparent;
+      color: rgb(206, 207, 209);
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s ease-out;
+    }
+    #help {
+      display: block;
+      visibility: hidden;
+      width: 400px;
+      cursor: default;
+      position: absolute;
+      left: 0px;
+      right: 0px;
+      margin: auto;
+      font-family: PragmataPro, "Droid Sans Mono", "Liberation Sans Mono", "DejaVu Sans Mono", Consolas, "Lucida Console", monospace;
+      padding: 8px;
+      text-align: left;
+      border-radius: 1px;
+      opacity: 0;
+      background: rgb(39, 40, 43);
+      color: rgb(170, 171, 173);
+      transition: 0.2s ease-out;
+    }
+    #more:hover #plus {
+      background: rgb(39, 40, 43);
+    }
+    #more:hover #help {
+      visibility: visible;
+      opacity: 1;
+    }
+    #menu {
+      width: 100%;
+      height: 32px;
+      margin: 0px auto;
+      background: transparent;
+      color: rgb(170, 171, 173);
+      cursor: default;
+      text-align: center;
+    }
+    #mnu {
+      height: 32px;
+      line-height: 32px;
+      width: calc(1024px);
+      text-align: center;
+    }
+    #menu ul {
+      display: inline-table;
+      position: relative;
+      list-style: none;
+    }
+    #menu label {
+      padding: 0px;
+      display: inline-block;
+      font-weight: bold;
+      width: 200px;
+    }
+    #menu ul li {
+      float: left;
+      border-radius: 0px 0px 1px 1px;
+      height: 32px;
+      text-align: center;
+      transition: 0.2s ease-out;
+    }
+    #menu ul li:hover {
+      background: rgb(39, 40, 43);
+      color: rgb(206, 207, 209);
+    }
+    #menu ul li a {
+      display: block;
+      white-space: nowrap;
+      padding: 0px 10px;
+    }
+    #menu ul ul {
+      display: flex;
+      flex-flow: column wrap;
+      visibility: hidden;
+      opacity: 0;
+      width: calc(1024px);
+      height: calc(96px);
+      position: absolute;
+      bottom: 100%;
+      left: 0px;
+      right: 0px;
+      z-index: 100;
+      background: rgb(39, 40, 43);
+      border-radius: 1px;
+      transition: 0.2s ease-out;
+    }
+    #menu ul li:hover > ul {
+      bottom: 100%;
+      visibility: visible;
+      opacity: 1;
+      z-index: 101;
+      height: calc(96px);
+    }
+    #menu ul ul li {
+      background: rgb(39, 40, 43);
+      border-radius: 1px;
+      height: 32px;
+      text-align: left;
+      width: 200px;
+    }
+    #menu ul #mnu_1 li:hover {
+      background: rgb(213, 74, 86);
+    }
+    #menu ul #mnu_2 li:hover {
+      background: rgb(132, 189, 63);
+    }
+    #menu ul #mnu_3 li:hover {
+      background: rgb(215, 83, 164);
+    }
+    #menu ul #mnu_4 li:hover {
+      background: rgb(111, 103, 230);
+    }
+    #menu ul #mnu_5 li:hover {
+      background: rgb(111, 103, 230);
+    }
+    #menu img {
+      position: relative;
+      top: 3px;
+      left: -3px;
+      visibility: hidden;
+      width: 16px;
+      height: 16px;
+    }
+  </style>
+</head>
+
+<body class="htmlNoPages" onload="javascript:init();">
+  <div class="center gwd-div-1nyq gwd-new-class-caue">
+    <div class="content" id="form">
+      <div id="menu">
+        <ul id="mnu"></ul>
+      </div><br>
+      
+      <input type="text" id="q" value="" placeholder="Search..." onkeypress="javascript:handleQuery(event,this.value);" onfocus="this.value=this.value"><br>
+      <br>
+      
+      <div id="more">
+        <input type="button" id="plus" value="+"><br>
+        
+        <div id="help"></div>
+      </div>
+    </div>
+  </div>
+</body>
+
 </html>
