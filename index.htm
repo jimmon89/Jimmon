@@ -12,9 +12,13 @@
      <li>end search in <b>'!i'</b> to use <b>'Google Images'</b></li> \
      <li>end search in <b>'!y'</b> to use <b>'YouTube'</b></li> \
      <li>end search in <b>'!g'</b> to use <b>'PCGamingWiki'</b></li> \
+     <li>end search in <b>'!p'</b> to use <b>'ProtonDB'</b></li> \
+     <li>end search in <b>'!s'</b> to use <b>'SteamDB'</b></li> \
      <li>end search in <b>'!w'</b> to use <b>'Wikipedia'</b></li> \
      <li>end search in <b>'!u'</b> to use <b>'Urban Dictionary'</b></li> \
      <li>end search in <b>'!m'</b> to use <b>'IMDb'</b></li> \
+     <li>end search in <b>'!mp'</b> to search <b>'CurseForge'</b> for minecraft modpacks</li> \
+     <li>end search in <b>'!rp'</b> to search <b>'CurseForge'</b> for minecraft resource packs</li> \
 </ul>";
     var search = [
       ["", "https://www.google.com/search?q="],
@@ -24,6 +28,11 @@
       ["!w", "http://en.wikipedia.org/w/index.php?search="],
       ["!u", "http://www.urbandictionary.com/define.php?term="],
       ["!m", "http://www.imdb.com/find?q="],
+      ["!p", "https://www.protondb.com/search?q="],
+      ["!s", "https://steamdb.info/search/?a=app&q="],
+      ["!mp", "https://www.curseforge.com/minecraft/modpacks/search?search="],
+      ["!rp", "https://www.curseforge.com/minecraft/texture-packs/search?search="],
+
     ];
     var menus = [
       ["General"],
@@ -35,20 +44,23 @@
     var showFavicon = true;
     var links = [
       ["Gmail", "https://mail.google.com/", ""],
-      ["Facebook", "http://facebook.com", ""],
       ["Pastebin", "http://pastebin.com", ""],
       ["Google Translate", "https://translate.google.com/", ""],
+      ["Google Voice", "https://voice.google.com/", ""],
       ["", "", ""],
-      ["Ultimate Steam F2P Filter", "http://store.steampowered.com/search/?tags=-9271%2C-9%2C-1666%2C-3871%2C-4736%2C-21978%2C-5577%2C-3799%2C-379975%2C-1676%2C-597%2C-1718%2C-1698%2C-1625%2C-1741%2C-1670%2C113&category1=998%2C997&category3=36&genre=Free%20to%20Play", ""],
       ["Humble Bundle", "https://www.humblebundle.com/", ""],
       ["Indie Gala", "https://www.indiegala.com/", ""],
       ["Steam Status", "https://steamstat.us/", ""],
       ["PCGamingWiki", "https://pcgamingwiki.com/", ""],
-      ["Roll20", "https://roll20.net/", ""],
+      ["Nexus Mods", "https://www.nexusmods.com/", ""],
+      ["Wabbajack Mod Installer", "https://www.wabbajack.org/#/", ""],
+      ["OpenMW Modding", "https://modding-openmw.com/", ""],
+      ["Minecraft Curseforge", "https://www.curseforge.com/minecraft/modpacks", ""],
       ["", "", ""],
       ["Imgur", "https://imgur.com/", ""],
       ["YouTube", "https://www.youtube.com/", ""],
       ["Netflix", "http://netflix.com", ""],
+      ["Sling TV", "https://www.sling.com/", ""],
       ["Twitch", "http://go.twitch.tv/", ""],
       ["", "", ""],
       ["Mega.nz", "https://mega.nz/", ""],
@@ -56,10 +68,14 @@
       ["Google Drive", "https://drive.google.com/", ""],
       ["SteamID.IO", "https://steamid.io/lookup/", ""],
       ["Mouse Sensitivity Calculator", "http://www.mouse-sensitivity.com/", ""],
-      ["Ninite", "https://ninite.com", ""],
+      ["GitHub", "https://github.com/", ""],
+      ["GitLab", "https://gitlab.com/", ""],
+      ["Pi-Hole Admin Panel", "http://pi.hole/admin/", "",]
       ["", "", ""],
       ["Steam Underground Community", "http://cs.rin.ru/forum/index.php", ""],
-	  ["Fit-Girl Repacks", "https://fitgirl-repacks.site/", ""],
+      ["Fit-Girl Repacks", "https://fitgirl-repacks.site/", ""],
+      ["GOG Games", "https://gog-games.com/", ""],
+      ["Steam Workshop Downloader", "https://steamworkshopdownloader.io/", ""],
       ["", "", ""],
     ];
     var ss = "";
