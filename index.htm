@@ -8,11 +8,12 @@
       return document.getElementById(id);
     };
     var help = "<ul> \
-     <li>end normally for <b>'Google (Default)'</b></li> \
+     <li>end normally for <b>'Personal SearXNG Search (Default)'</b></li> \
+     <li>end with <b>'!g'</b> for <b>'Google'</b></li> \
      <li>end with <b>'!i'</b> for <b>'Google Images'</b></li> \
      <li>end with <b>'!y'</b> for <b>'YouTube'</b></li> \
-     <li>end with <b>'!g'</b> for <b>'PCGamingWiki'</b></li> \
-     <li>end with <b>'!p'</b> for <b>'ProtonDB'</b></li> \
+     <li>end with <b>'!p'</b> for <b>'PCGamingWiki'</b></li> \
+     <li>end with <b>'!d'</b> for <b>'ProtonDB'</b></li> \
      <li>end with <b>'!s'</b> for <b>'SteamDB'</b></li> \
      <li>end with <b>'!w'</b> for <b>'Wikipedia'</b></li> \
      <li>end with <b>'!u'</b> for <b>'Urban Dictionary'</b></li> \
@@ -21,14 +22,15 @@
      <li>end with <b>'!rp'</b> for <b>'Minecraft ResourcePacks'</b></li> \
 </ul>";
     var search = [
-      ["", "https://www.google.com/search?q="],
+      ["", "http://jimmy-pc.taildf18fd.ts.net:8888/search?q="],
+      ["!g", "https://www.google.com/search?q="],
       ["!i", "https://www.google.com/search?tbm=isch&q="],
       ["!y", "https://www.youtube.com/results?search_query="],
-      ["!g", "https://pcgamingwiki.com/w/index.php?search="],
+      ["!p", "https://pcgamingwiki.com/w/index.php?search="],
       ["!w", "http://en.wikipedia.org/w/index.php?search="],
       ["!u", "http://www.urbandictionary.com/define.php?term="],
       ["!m", "http://www.imdb.com/find?q="],
-      ["!p", "https://www.protondb.com/search?q="],
+      ["!d", "https://www.protondb.com/search?q="],
       ["!s", "https://steamdb.info/search/?a=app&q="],
       ["!mp", "https://www.curseforge.com/minecraft/modpacks/search?search="],
       ["!rp", "https://www.curseforge.'com/minecraft/texture-packs/search?search="],
